@@ -1,0 +1,1378 @@
+/* ============================================================================
+   HEADER — transparente sobre el hero, sólido y claro al hacer scroll
+   ========================================================================== */
+
+.hdr {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 100;
+  transition: background-color 0.4s var(--ease), box-shadow 0.4s var(--ease);
+}
+
+.hdr__in {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding-block: 1.1rem;
+  transition: padding-block 0.4s var(--ease);
+}
+
+.hdr__logo {
+  position: relative;
+  flex: none;
+  margin-right: auto;
+  display: grid;
+  align-items: center;
+  height: clamp(46px, 5.4vw, 62px);
+  transition: height 0.4s var(--ease);
+}
+
+/* Las dos versiones ocupan la misma celda y se funden una en otra. */
+.hdr__mark {
+  grid-area: 1 / 1;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  transition: opacity 0.35s var(--ease);
+}
+
+/* El wordmark es la propia <img>, no un contenedor. */
+.hdr__mark--word {
+  width: auto;
+  height: clamp(46px, 5.4vw, 62px);
+  object-fit: contain;
+  object-position: left center;
+  transition: height 0.4s var(--ease);
+}
+
+.hdr.is-stuck .hdr__mark--word {
+  height: clamp(40px, 4.4vw, 48px);
+}
+
+.hdr__mark--badge {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hdr__mark--badge img {
+  width: clamp(38px, 4.2vw, 46px);
+  height: clamp(38px, 4.2vw, 46px);
+  border-radius: 50%;
+}
+
+.hdr__mark--badge b {
+  font-family: var(--display);
+  font-size: clamp(1.15rem, 1.8vw, 1.45rem);
+  font-weight: 600;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  color: var(--on-paper);
+}
+
+.hdr__mark--badge i {
+  display: block;
+  font-style: normal;
+  font-size: 0.52em;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  color: var(--blade-rose);
+}
+
+.hdr.is-stuck .hdr__logo {
+  height: clamp(40px, 4.4vw, 48px);
+}
+.hdr.is-stuck .hdr__mark--word {
+  opacity: 0;
+}
+.hdr.is-stuck .hdr__mark--badge {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.hdr__nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 2.4vw, 2.1rem);
+}
+
+.hdr__nav a {
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--on-navy);
+  padding-bottom: 3px;
+  background-image: linear-gradient(var(--blade-gold), var(--blade-gold));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 2px;
+  transition: background-size 0.3s var(--ease), color 0.4s var(--ease);
+}
+
+.hdr__nav a:hover,
+.hdr__nav a:focus-visible {
+  background-size: 100% 2px;
+}
+
+/* Estado sólido */
+.hdr.is-stuck {
+  background: var(--paper);
+  box-shadow: 0 1px 0 var(--paper-line);
+}
+.hdr.is-stuck .hdr__in {
+  padding-block: 0.6rem;
+}
+.hdr.is-stuck .hdr__nav a {
+  color: var(--on-paper);
+}
+.hdr.is-stuck .hdr__cta {
+  border-color: var(--paper-line);
+  color: var(--on-paper);
+}
+
+.hdr__cta {
+  flex: none;
+}
+
+/* --- Botón de menú y panel móvil ------------------------------------- */
+
+.hdr__burger {
+  display: none;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: var(--r-sm);
+  color: var(--on-navy);
+}
+.hdr.is-stuck .hdr__burger {
+  color: var(--on-paper);
+}
+
+.hdr__burger span,
+.hdr__burger span::before,
+.hdr__burger span::after {
+  display: block;
+  width: 22px;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+  transition: transform 0.3s var(--ease), opacity 0.2s var(--ease);
+}
+.hdr__burger span::before,
+.hdr__burger span::after {
+  content: '';
+  position: absolute;
+}
+.hdr__burger span::before {
+  translate: 0 -7px;
+}
+.hdr__burger span::after {
+  translate: 0 7px;
+}
+.hdr__burger[aria-expanded='true'] span {
+  background: transparent;
+}
+.hdr__burger[aria-expanded='true'] span::before {
+  translate: 0 0;
+  rotate: 45deg;
+}
+.hdr__burger[aria-expanded='true'] span::after {
+  translate: 0 0;
+  rotate: -45deg;
+}
+
+.hdr__panel {
+  display: none;
+}
+
+@media (max-width: 860px) {
+  .hdr__nav,
+  .hdr__cta {
+    display: none;
+  }
+  .hdr__burger {
+    display: grid;
+  }
+  /* El borde solo existe cuando el panel está abierto: con max-height 0
+     una línea de 1px seguiría dibujándose bajo el header. */
+  .hdr__panel {
+    display: block;
+    background: var(--paper);
+    border-top: 0 solid var(--paper-line);
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.4s var(--ease);
+  }
+  .hdr__panel.is-open {
+    max-height: 26rem;
+    border-top-width: 1px;
+  }
+  .hdr__panel ul {
+    padding: 0.75rem var(--gutter) 1.5rem;
+  }
+  .hdr__panel a {
+    display: block;
+    padding: 0.85rem 0;
+    font-size: var(--step-1);
+    font-weight: 600;
+    color: var(--on-paper);
+    border-bottom: 1px solid var(--paper-line);
+  }
+  .hdr__panel .btn {
+    margin-top: 1.1rem;
+  }
+}
+
+/* ============================================================================
+   HERO — el obturador es la pieza principal
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding-block: 8rem 4rem;
+  background-color: var(--navy);
+  background-image: var(--halftone-navy);
+  background-size: var(--halftone-size);
+  overflow: hidden;
+}
+
+/* Resplandor rosa detrás del obturador, del color de la estrella fugaz. */
+.hero::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -10%;
+  width: min(90vw, 54rem);
+  aspect-ratio: 1;
+  translate: 0 -50%;
+  background: radial-gradient(
+    circle,
+    rgba(246, 36, 114, 0.17),
+    transparent 62%
+  );
+  pointer-events: none;
+}
+
+.hero__grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr minmax(0, 0.92fr);
+  align-items: center;
+  gap: clamp(2.5rem, 6vw, 5rem);
+}
+
+.hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--on-navy-dim);
+  margin-bottom: 1.6rem;
+}
+.hero__eyebrow::before {
+  content: '';
+  width: 28px;
+  height: 2px;
+  background: var(--blade-rose);
+}
+
+.hero h1 {
+  font-size: var(--step-hero);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+}
+
+/* Trazo rosa bajo la última palabra: el mismo gesto del logotipo. */
+.hero h1 .swish {
+  position: relative;
+  white-space: nowrap;
+}
+.hero h1 .swish svg {
+  position: absolute;
+  left: 0;
+  bottom: -0.16em;
+  width: 100%;
+  height: 0.22em;
+  overflow: visible;
+  color: var(--blade-rose);
+}
+
+.hero__lede {
+  margin-top: 1.75rem;
+  max-width: 46ch;
+  font-size: var(--step-1);
+  color: var(--on-navy-dim);
+}
+
+.hero__acts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin-top: 2.5rem;
+}
+
+.hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.75rem;
+  margin-top: 2.75rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--navy-line);
+  font-size: var(--step--1);
+  color: var(--on-navy-dim);
+}
+.hero__meta li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.hero__meta b {
+  color: var(--on-navy);
+  font-weight: 700;
+}
+
+.hero__scroll {
+  position: absolute;
+  left: 50%;
+  bottom: 1.25rem;
+  translate: -50% 0;
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--on-navy-dim);
+}
+.hero__scroll::after {
+  content: '';
+  width: 1px;
+  height: 34px;
+  background: linear-gradient(var(--navy-line), transparent);
+}
+
+/* --- El obturador ---------------------------------------------------- */
+
+.iris {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+}
+
+/* Hexágono con la foto dentro. Se abre al cargar. */
+/* Hexágono regular: la proporción 2/√3 hace que los seis lados midan igual,
+   que es lo que permite colocar los gajos exactamente sobre las aristas. */
+.iris__frame {
+  position: relative;
+  width: 82%;
+  aspect-ratio: 1.1547;
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  background: #0d4a63;
+  scale: 0.15;
+  opacity: 0;
+  transition: scale 1.15s var(--ease), opacity 0.7s var(--ease);
+}
+
+.iris.is-open .iris__frame {
+  scale: 1;
+  opacity: 1;
+}
+
+.iris__frame .shot,
+.iris__frame .shot__ph {
+  height: 100%;
+  border-radius: 0;
+  border: 0;
+}
+.iris__frame .shot {
+  position: absolute;
+  inset: 0;
+}
+
+/* Seis gajos de color, uno por arista del hexágono: el obturador del logo.
+   Cada gajo es una caja cuadrada que gira sobre el centro; la barra viaja
+   dentro de ella, así que basta girar la caja 60° por gajo.
+   Apotema del hexágono = 0.433 × 82% = 35.5% → la barra queda en el 14.5%. */
+.iris__blade {
+  position: absolute;
+  inset: 0;
+  rotate: var(--rot);
+  pointer-events: none;
+}
+
+.iris__blade::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 41%;
+  height: 5px;
+  border-radius: 5px;
+  background: var(--blade);
+  translate: -50% -50%;
+  opacity: 0;
+  transition: top 0.9s var(--ease), opacity 0.5s var(--ease);
+  transition-delay: var(--delay);
+}
+
+.iris.is-open .iris__blade::before {
+  top: 14.5%;
+  opacity: 1;
+}
+
+/* Aro exterior punteado, como el aro dorado del badge. */
+.iris__ring {
+  position: absolute;
+  inset: 4%;
+  border-radius: 50%;
+  border: 1px dashed var(--navy-line);
+  rotate: 0deg;
+  transition: rotate 1.4s var(--ease);
+}
+.iris.is-open .iris__ring {
+  rotate: 60deg;
+}
+
+/* Sello circular del badge, encima del obturador. */
+.iris__seal {
+  position: absolute;
+  right: 2%;
+  bottom: 6%;
+  width: clamp(64px, 12%, 96px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.42);
+  opacity: 0;
+  scale: 0.6;
+  transition: opacity 0.6s var(--ease) 0.75s, scale 0.6s var(--ease) 0.75s;
+}
+.iris.is-open .iris__seal {
+  opacity: 1;
+  scale: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iris__frame,
+  .iris__seal {
+    scale: 1;
+    opacity: 1;
+  }
+  .iris__blade::before {
+    top: 14.5%;
+    opacity: 1;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero {
+    min-height: auto;
+    padding-block: 7.5rem 4rem;
+  }
+  .hero__grid {
+    grid-template-columns: 1fr;
+  }
+  .iris {
+    max-width: 26rem;
+    margin-inline: auto;
+    order: -1;
+  }
+  .hero__scroll {
+    display: none;
+  }
+}
+
+/* ============================================================================
+   NOSOTROS — texto y foto alternados
+   ========================================================================== */
+
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: clamp(2.5rem, 6vw, 5.5rem);
+}
+
+.split__text h2 {
+  font-size: var(--step-5);
+}
+
+.split__text p {
+  margin-top: 1.4rem;
+  max-width: var(--measure);
+  font-size: var(--step-1);
+  color: var(--on-paper-dim);
+}
+
+.split__text .btn {
+  margin-top: 2.25rem;
+}
+
+.pillars {
+  display: grid;
+  gap: 1.1rem;
+  margin-top: 2.25rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--paper-line);
+}
+
+.pillars li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.9rem;
+  align-items: start;
+  font-size: var(--step-0);
+}
+
+.pillars b {
+  font-family: var(--display);
+  font-weight: 600;
+}
+
+.pillars span {
+  color: var(--on-paper-dim);
+}
+
+.pillars__mark {
+  width: 10px;
+  height: 10px;
+  margin-top: 0.5rem;
+  border-radius: 2px;
+  rotate: 45deg;
+  background: var(--blade);
+}
+
+@media (max-width: 860px) {
+  .split {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================================================
+   SERVICIOS
+   ========================================================================== */
+
+/* Tres columnas exactas: seis servicios llenan 3+3 sin celdas huérfanas. */
+.svcs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--paper-line);
+  border: 1px solid var(--paper-line);
+  /* Las tarjetas son del papel claro; la banda es medio tono más oscura,
+     así la rejilla se despega del fondo sin necesidad de sombra. */
+  border-radius: var(--r-md);
+  overflow: hidden;
+}
+
+/* Rejilla a hueso: las divisiones son el borde compartido, no una sombra. */
+.svc {
+  position: relative;
+  padding: clamp(1.75rem, 3vw, 2.5rem);
+  background: var(--paper);
+  transition: background-color 0.3s var(--ease);
+}
+
+.svc::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--blade);
+  scale: 1 0;
+  transform-origin: 50% 0;
+  transition: scale 0.4s var(--ease);
+}
+
+.svc:hover {
+  background: var(--paper-deep);
+}
+.svc:hover::before {
+  scale: 1 1;
+}
+
+.svc__icon {
+  color: var(--blade-ink);
+  margin-bottom: 1.5rem;
+}
+
+.svc h3 {
+  font-size: var(--step-2);
+}
+
+.svc p {
+  margin-top: 0.7rem;
+  font-size: var(--step--1);
+  line-height: 1.6;
+  color: var(--on-paper-dim);
+}
+
+@media (max-width: 900px) {
+  .svcs {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 560px) {
+  .svcs {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================================================
+   PAQUETES
+   ========================================================================== */
+
+.pk__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+  padding-bottom: 1.75rem;
+  border-bottom: 1px solid var(--navy-line);
+}
+
+.pk__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 1.25rem;
+  border-radius: var(--r-pill);
+  border: 1.5px solid var(--navy-line);
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--on-navy-dim);
+  transition: border-color 0.25s var(--ease), color 0.25s var(--ease),
+    background-color 0.25s var(--ease);
+}
+
+.pk__tab::before {
+  content: '';
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--blade);
+  opacity: 0.55;
+  transition: opacity 0.25s var(--ease), scale 0.25s var(--ease);
+}
+
+.pk__tab:hover {
+  color: var(--on-navy);
+  border-color: var(--on-navy-dim);
+}
+
+.pk__tab[aria-selected='true'] {
+  background: var(--navy-soft);
+  border-color: var(--blade);
+  color: var(--on-navy);
+}
+.pk__tab[aria-selected='true']::before {
+  opacity: 1;
+  scale: 1.15;
+}
+
+.pk__intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+  margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+}
+
+.pk__intro h3 {
+  font-size: var(--step-4);
+}
+
+.pk__intro > div > p {
+  margin-top: 1.1rem;
+  max-width: var(--measure);
+  font-size: var(--step-1);
+  color: var(--on-navy-dim);
+}
+
+/* Caja de "incluye en todos" + promoción */
+.pk__all {
+  padding: clamp(1.5rem, 3vw, 2rem);
+  border: 1px solid var(--navy-line);
+  border-radius: var(--r-md);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.pk__all h4 {
+  font-size: var(--step-1);
+  margin-bottom: 1rem;
+}
+
+.pk__all ul {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.pk__promo {
+  display: grid;
+  gap: 0.7rem;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px dashed var(--navy-line);
+}
+
+.pk__promo li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.7rem;
+  align-items: start;
+  font-size: var(--step--1);
+  color: var(--blade-gold);
+}
+
+.pk__promo svg {
+  margin-top: 0.2rem;
+  flex: none;
+}
+
+/* --- La escalera de niveles ------------------------------------------
+   Cada tarjeta sube según sus estrellas: la progresión que ya afirmaban
+   los flyers se vuelve estructura, no adorno.
+   ------------------------------------------------------------------- */
+
+.ladder {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: clamp(1.25rem, 2.5vw, 1.75rem);
+  align-items: stretch;
+}
+
+.pkg {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: clamp(1.5rem, 2.6vw, 2rem);
+  border: 1px solid var(--navy-line);
+  border-radius: var(--r-md);
+  background: var(--navy-soft);
+  transition: border-color 0.3s var(--ease), translate 0.3s var(--ease);
+}
+
+.pkg:hover {
+  border-color: var(--blade);
+  translate: 0 -4px;
+}
+
+/* El paquete tope lleva el color de la ocasión en el borde superior. */
+.pkg--top {
+  border-top: 3px solid var(--blade);
+}
+
+.pkg__kicker {
+  display: inline-block;
+  align-self: start;
+  margin-bottom: 0.9rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: var(--r-pill);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  background: var(--chip);
+  color: var(--chip-ink);
+}
+
+/* Dos renglones reservados: así las estrellas y la duración quedan a la
+   misma altura en toda la fila, tenga el nombre una línea o dos. */
+.pkg__name {
+  font-size: var(--step-3);
+  min-height: 2.08em;
+}
+
+.pkg__stars {
+  display: flex;
+  gap: 3px;
+  margin-top: 0.7rem;
+  color: var(--blade-gold);
+}
+.pkg__stars svg {
+  flex: none;
+}
+.pkg__stars .is-empty {
+  color: var(--navy-line);
+}
+
+.pkg__dur {
+  margin-top: 0.9rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--navy-line);
+  font-size: var(--step--1);
+  font-weight: 700;
+  color: var(--on-navy);
+}
+
+.pkg__feats {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 1.1rem;
+  font-size: var(--step--1);
+  line-height: 1.55;
+  color: var(--on-navy-dim);
+}
+
+.pkg__feats li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.65rem;
+  align-items: start;
+}
+
+.pkg__feats svg {
+  margin-top: 0.3rem;
+  flex: none;
+  color: var(--blade);
+}
+
+.pkg__fine {
+  margin-top: 1rem;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--on-navy-dim);
+  opacity: 0.85;
+}
+
+/* Dentro de la tarjeta el hueco va apaisado: doce cajas verticales harían
+   la sección ilegible. La foto grande de la ocasión vive en la intro. */
+.pkg__shot {
+  margin-top: 1.25rem;
+}
+
+.pkg__foot {
+  margin-top: auto;
+  padding-top: 1.5rem;
+}
+
+.pkg__price {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.9rem;
+  font-size: var(--step--1);
+  color: var(--on-navy-dim);
+}
+
+.pkg__price b {
+  font-family: var(--display);
+  font-size: var(--step-2);
+  font-weight: 600;
+  color: var(--on-navy);
+}
+
+.pkg__acts {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.pkg__hint {
+  margin-top: 0.7rem;
+  font-size: 0.74rem;
+  line-height: 1.45;
+  color: var(--on-navy-dim);
+}
+
+@media (max-width: 860px) {
+  .pk__intro {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- Paquete único: composición editorial, no una tarjeta suelta ----- */
+
+/* Foto a la izquierda, texto a la derecha: invierte el sentido de Nosotros
+   y de las rejillas de tarjetas, así la página alterna al bajar. Se hace
+   aquí dentro y no en una sección de ancho completo porque el borde de la
+   tarjeta contiene el cambio: el eje izquierdo de la página no se rompe. */
+.solo {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+  padding: clamp(1.75rem, 3.5vw, 2.75rem);
+  border: 1px solid var(--navy-line);
+  border-top: 3px solid var(--blade);
+  border-radius: var(--r-md);
+  background: var(--navy-soft);
+}
+
+/* La foto es el segundo hijo en el marcado (el texto manda para lectores
+   de pantalla) y se sube al primer lugar solo visualmente. */
+.solo__media {
+  order: -1;
+}
+
+.solo__feats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem 1.5rem;
+  margin-top: 1.4rem;
+  font-size: var(--step-0);
+  color: var(--on-navy-dim);
+}
+
+.solo__feats li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.65rem;
+  align-items: start;
+}
+
+.solo__feats svg {
+  margin-top: 0.35rem;
+  flex: none;
+  color: var(--blade);
+}
+
+@media (max-width: 860px) {
+  .solo {
+    grid-template-columns: 1fr;
+  }
+  /* En una sola columna vuelve el orden del marcado: nombre, luego foto. */
+  .solo__media {
+    order: 0;
+  }
+  .solo__feats {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================================================
+   GALERÍA
+   ========================================================================== */
+
+.gal__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2.25rem;
+}
+
+.gal__filter {
+  padding: 0.5rem 1.05rem;
+  border-radius: var(--r-pill);
+  border: 1.5px solid var(--paper-line);
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--on-paper-dim);
+  transition: border-color 0.25s var(--ease), color 0.25s var(--ease),
+    background-color 0.25s var(--ease);
+}
+
+.gal__filter:hover {
+  color: var(--on-paper);
+  border-color: var(--on-paper-dim);
+}
+
+.gal__filter[aria-pressed='true'] {
+  background: var(--on-paper);
+  border-color: var(--on-paper);
+  color: var(--paper);
+}
+
+/* Rejilla uniforme. Un mosaico de alturas mezcladas deja huecos distintos
+   cada vez que se filtra por categoría; aquí el orden se mantiene siempre. */
+.gal__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  gap: 1rem;
+}
+
+.gal__item {
+  position: relative;
+}
+
+.gal__cat {
+  position: absolute;
+  left: 0.85rem;
+  top: 0.85rem;
+  z-index: 2;
+  padding: 0.25rem 0.7rem;
+  border-radius: var(--r-pill);
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: var(--navy-deep);
+  color: var(--on-navy);
+}
+
+
+/* ============================================================================
+   TESTIMONIOS
+   ========================================================================== */
+
+.tst {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  gap: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+.tst__card {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1.75rem, 3vw, 2.25rem);
+  border: 1px solid var(--navy-line);
+  border-radius: var(--r-md);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.tst__mark {
+  color: var(--blade-rose);
+  margin-bottom: 1.1rem;
+}
+
+.tst__card blockquote {
+  margin: 0;
+  font-size: var(--step-1);
+  line-height: 1.6;
+}
+
+.tst__by {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-top: auto;
+  padding-top: 1.75rem;
+}
+
+.tst__by img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  flex: none;
+}
+
+.tst__by cite {
+  display: block;
+  font-style: normal;
+  font-weight: 700;
+  font-size: var(--step--1);
+}
+
+.tst__by span {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--on-navy-dim);
+}
+
+.tst__placeholder {
+  margin-top: 1.1rem;
+  font-size: 0.74rem;
+  color: var(--blade-gold);
+  opacity: 0.85;
+}
+
+/* ============================================================================
+   CONTACTO
+   ========================================================================== */
+
+.ct {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+  gap: clamp(2.5rem, 6vw, 5rem);
+  align-items: start;
+}
+
+.ct__lines {
+  display: grid;
+  gap: 1.75rem;
+  margin-top: 2.25rem;
+}
+
+.ct__line h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: var(--step--1);
+  font-family: var(--body);
+  font-weight: 700;
+  color: var(--on-paper-dim);
+  margin-bottom: 0.45rem;
+}
+
+/* Cada dato en su renglón: dos teléfonos en línea se leían como uno solo. */
+.ct__line a,
+.ct__line p {
+  display: block;
+  width: fit-content;
+  font-family: var(--display);
+  font-size: var(--step-2);
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--on-paper);
+}
+
+.ct__line a {
+  background-image: linear-gradient(var(--blade-rose), var(--blade-rose));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 2px;
+  transition: background-size 0.3s var(--ease);
+}
+.ct__line a:hover {
+  background-size: 100% 2px;
+}
+
+.ct__socials {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 2.25rem;
+}
+
+.ct__socials a {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid var(--paper-line);
+  color: var(--on-paper);
+  transition: background-color 0.25s var(--ease), color 0.25s var(--ease),
+    border-color 0.25s var(--ease);
+}
+.ct__socials a:hover {
+  background: var(--on-paper);
+  border-color: var(--on-paper);
+  color: var(--paper);
+}
+
+/* --- Formulario ------------------------------------------------------ */
+
+.form {
+  padding: clamp(1.75rem, 3.5vw, 2.5rem);
+  border: 1px solid var(--paper-line);
+  border-radius: var(--r-md);
+  background: #fff;
+}
+
+.form__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.field {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.field span {
+  display: block;
+  font-size: var(--step--1);
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  padding: 0.8rem 0.95rem;
+  font: inherit;
+  font-size: var(--step-0);
+  color: var(--on-paper);
+  background: var(--paper);
+  border: 1.5px solid var(--paper-line);
+  border-radius: var(--r-sm);
+  transition: border-color 0.2s var(--ease);
+}
+
+.field textarea {
+  min-height: 7rem;
+  resize: vertical;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: var(--blade-rose);
+  outline-offset: 1px;
+}
+
+.form__note {
+  margin-top: 1rem;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--on-paper-dim);
+}
+
+.form__ok {
+  display: flex;
+  align-items: start;
+  gap: 0.7rem;
+  margin-bottom: 1.25rem;
+  padding: 0.9rem 1rem;
+  border-radius: var(--r-sm);
+  border: 1.5px solid var(--blade-teal);
+  background: rgba(0, 184, 152, 0.1);
+  font-size: var(--step--1);
+  color: var(--blade-teal-ink);
+}
+
+@media (max-width: 860px) {
+  .ct {
+    grid-template-columns: 1fr;
+  }
+  .form__row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
+/* ============================================================================
+   PIE
+   ========================================================================== */
+
+.ft {
+  padding-block: clamp(3.5rem, 7vw, 5rem) 2rem;
+  background: var(--navy-deep);
+  color: var(--on-navy);
+}
+
+.ft__top {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) repeat(3, minmax(0, 1fr));
+  gap: clamp(2rem, 4vw, 3rem);
+  padding-bottom: 3rem;
+  border-bottom: 1px solid var(--navy-line);
+}
+
+.ft__badge {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  margin-bottom: 1.4rem;
+}
+
+.ft__blurb {
+  max-width: 34ch;
+  font-size: var(--step--1);
+  line-height: 1.6;
+  color: var(--on-navy-dim);
+}
+
+.ft__col h3 {
+  font-family: var(--body);
+  font-size: var(--step--1);
+  font-weight: 700;
+  margin-bottom: 1.1rem;
+}
+
+.ft__col ul {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.ft__col a,
+.ft__col li {
+  font-size: var(--step--1);
+  color: var(--on-navy-dim);
+  transition: color 0.2s var(--ease);
+}
+
+.ft__col a:hover {
+  color: var(--on-navy);
+}
+
+.ft__socials {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+}
+
+.ft__socials a {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--navy-line);
+  color: var(--on-navy-dim);
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+.ft__socials a:hover {
+  color: var(--on-navy);
+  border-color: var(--on-navy);
+}
+
+/* Cinta de seis gajos: la firma de color de la marca. */
+.ft__blades {
+  display: flex;
+  height: 4px;
+  margin-top: 2rem;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.ft__blades span {
+  flex: 1;
+}
+
+.ft__base {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.75rem 2rem;
+  margin-top: 2rem;
+  font-size: 0.78rem;
+  color: var(--on-navy-dim);
+}
+
+@media (max-width: 860px) {
+  .ft__top {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 560px) {
+  .ft__top {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================================================
+   BOTÓN FLOTANTE DE WHATSAPP
+   ========================================================================== */
+
+.wa {
+  position: fixed;
+  right: clamp(1rem, 3vw, 1.75rem);
+  bottom: clamp(1rem, 3vw, 1.75rem);
+  z-index: 90;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1.25rem;
+  border-radius: var(--r-pill);
+  background: #25d366;
+  color: #04301a;
+  font-size: var(--step--1);
+  font-weight: 700;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.32);
+  opacity: 0;
+  translate: 0 16px;
+  pointer-events: none;
+  transition: opacity 0.4s var(--ease), translate 0.4s var(--ease);
+}
+
+.wa.is-shown {
+  opacity: 1;
+  translate: 0 0;
+  pointer-events: auto;
+}
+
+.wa span {
+  display: none;
+}
+
+@media (min-width: 560px) {
+  .wa span {
+    display: inline;
+  }
+}

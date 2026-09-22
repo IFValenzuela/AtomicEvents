@@ -1,0 +1,92 @@
+/* ============================================================================
+   ATOMIC EVENTS — TOKENS
+   Todos los colores están muestreados directamente de los archivos del logo.
+   ========================================================================== */
+
+:root {
+  /* --- Fondos -------------------------------------------------------- */
+  --navy: #003247;        /* interior del badge circular */
+  --navy-deep: #00212f;   /* capa más profunda: footer, sombras */
+  --navy-soft: #0a4159;   /* tarjetas sobre navy */
+  --navy-line: #1b5670;   /* divisiones sobre navy */
+
+  --paper: #edf1f1;       /* papel frío, de la familia petróleo */
+  --paper-deep: #dfe7e7;  /* tarjetas sobre papel */
+  --paper-line: #c6d3d4;  /* divisiones sobre papel */
+
+  /* --- Gajos del obturador. Cada ocasión toma uno. ------------------- */
+  --blade-rose:   #f62472;  /* estrella fugaz — Propuestas */
+  --blade-azure:  #0090d0;  /* gajo azul — Photo Booth 360° */
+  --blade-violet: #5810a0;  /* gajo violeta — Baby Shower */
+  --blade-gold:   #ffdb2c;  /* aro del badge — Bodas */
+  --blade-teal:   #00b898;  /* gajo verde — XV Años */
+  --blade-ember:  #f83800;  /* gajo naranja — chisperos */
+
+  /* Relleno e tinta de las insignias de nivel. Cada pareja está medida:
+     ningún gajo sirve con un solo color de texto (el violeta pide blanco,
+     el dorado pide oscuro), así que la pareja se declara explícitamente. */
+  --chip-rose:   #e51763;  --chip-rose-ink:   #ffffff;  /* 4.53:1 */
+  --chip-azure:  #0090d0;  --chip-azure-ink:  #00212f;  /* 4.69:1 */
+  --chip-violet: #6a1cba;  --chip-violet-ink: #ffffff;  /* 8.30:1 */
+  --chip-gold:   #ffdb2c;  --chip-gold-ink:   #00212f;  /* 12.25:1 */
+  --chip-teal:   #00b898;  --chip-teal-ink:   #00212f;  /* 6.60:1 */
+  --chip-ember:  #ff4d12;  --chip-ember-ink:  #00212f;  /* 5.02:1 */
+
+  /* Variantes legibles de los gajos sobre fondo claro (contraste AA). */
+  --blade-rose-ink:   #c50d55;
+  /* El rosa de marca sobre blanco da 3.88:1. Para botones rellenos con
+     texto blanco se usa este tono, que sí alcanza AA (4.83:1). El rosa
+     original se conserva para trazos, estrellas y bordes. */
+  --rose-solid:       #dd1560;
+  --rose-solid-hover: #c50d55;
+  --blade-azure-ink:  #00688f;
+  --blade-violet-ink: #4a0d86;
+  --blade-gold-ink:   #7d6100;
+  --blade-teal-ink:   #00705d;
+  --blade-ember-ink:  #b42900;
+
+  /* --- Texto --------------------------------------------------------- */
+  --on-navy: #f4f8f8;
+  --on-navy-dim: #a8c2cc;
+  --on-paper: #062a3a;
+  --on-paper-dim: #4c6b78;
+
+  /* --- Tipografía ---------------------------------------------------- */
+  --display: 'Fredoka', 'Trebuchet MS', system-ui, sans-serif;
+  --body: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --step--1: 0.875rem;
+  --step-0: 1rem;
+  --step-1: 1.125rem;
+  --step-2: clamp(1.25rem, 0.9rem + 1.1vw, 1.5rem);
+  --step-3: clamp(1.5rem, 1.1rem + 1.7vw, 2rem);
+  --step-4: clamp(1.9rem, 1.3rem + 2.6vw, 2.75rem);
+  --step-5: clamp(2.3rem, 1.4rem + 4vw, 3.8rem);
+  --step-hero: clamp(2.6rem, 1.3rem + 5.2vw, 4.9rem);
+
+  /* --- Ritmo --------------------------------------------------------- */
+  --gutter: clamp(1.25rem, 4vw, 2.5rem);
+  --measure: 60ch;
+  --shell: 78rem;
+  --section-y: clamp(5rem, 11vh, 9rem);
+
+  /* --- Forma --------------------------------------------------------- */
+  --r-sm: 6px;
+  --r-md: 14px;
+  --r-pill: 999px;
+
+  /* --- Trama de puntos: la textura del badge ------------------------- */
+  --halftone-navy: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.055) 1.1px,
+    transparent 1.2px
+  );
+  --halftone-paper: radial-gradient(
+    circle at center,
+    rgba(0, 50, 71, 0.085) 1.1px,
+    transparent 1.2px
+  );
+  --halftone-size: 9px 9px;
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
